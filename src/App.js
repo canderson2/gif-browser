@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import _ from 'lodash';
 
 const App = () => {
   const PER_PAGE_LIMIT = 24; // a number divisible by 3 (3 GIFs per row)
@@ -66,7 +67,7 @@ const App = () => {
       if (fetchedResults.length === 0) {
         setHasMoreResults(false);
       } else {
-        setResults(prevResults => [...prevResults, ...fetchedResults]);
+        setResults(prevResults => _.uniqBy([...prevResults, ...fetchedResults], 'id'));
       }
 
       setLoading(false);
