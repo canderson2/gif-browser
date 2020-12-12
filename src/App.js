@@ -1,9 +1,27 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const App = () => {
 
   const [searchTerm, setSearchTerm] = useState('');
-  console.log('searchTerm', searchTerm)
+  const [results, setResults] = useState([]);
+
+  const fetchTrendingResults = () => {
+    return axios({
+      method: 'GET',
+      url: 'https://api.giphy.com/v1/gifs/trending',
+      params: {
+        api_key: process.env.REACT_APP_GIPHY_API_KEY, // required param
+        limit: 25, // defaults to 25 per API docs
+        offset: 0 // defaults to 0 per API docs
+      }
+    })
+  }
+
+  useEffect(() => {
+    fetchTrendingResults().then(res => console.log(res))
+  }, [])
+
 
   return (
     <>
