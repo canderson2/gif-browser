@@ -4,7 +4,16 @@ import axios from 'axios';
 const App = () => {
 
   const [searchTerm, setSearchTerm] = useState('');
+  const [queriedSearchTerm, setQueriedSearchTerm] = useState('');
+
   const [results, setResults] = useState([]);
+
+  const handleSubmit = (e) => {
+    // console.log('submitting search request...');
+
+    e.preventDefault();
+    setQueriedSearchTerm(searchTerm);
+  }
 
   const fetchTrendingResults = () => {
     return axios({
@@ -18,13 +27,13 @@ const App = () => {
     })
   }
 
-  const fetchSearchResults = () => {
+  const fetchSearchResults = (query) => {
     return axios({
       method: 'GET',
       url: 'https://api.giphy.com/v1/gifs/search',
       params: {
         api_key: process.env.REACT_APP_GIPHY_API_KEY, // required param
-        q: 'dave chappelle', // required param
+        q: query, // required param
         limit: 25, // defaults to 25 per API docs
         offset: 0 // defaults to 0 per API docs
       }
@@ -39,12 +48,12 @@ const App = () => {
     //   setResults(fetchedData);
     // })
 
-    fetchSearchResults().then(res => {
+    fetchSearchResults(queriedSearchTerm).then(res => {
       console.log('search results', res)
 
       setResults(res.data.data)
     })
-  }, [])
+  }, [queriedSearchTerm])
 
 
   return (
@@ -64,7 +73,11 @@ const App = () => {
         <section className="py-5 text-center container">
           <div className="row py-lg-5">
             <div className="col-lg-6 col-md-8 mx-auto">
-              <input value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+              <form onSubmit={(e) => handleSubmit(e)}>
+                <div className="input-group mb-3">
+                  <input className="form-control" type="text" placeholder="Search" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+                </div>
+              </form>
             </div>
           </div>
         </section>
