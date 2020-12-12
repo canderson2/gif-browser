@@ -71,6 +71,7 @@ const App = () => {
     const target = document.querySelector('#load-more-results');
 
     const observer = new IntersectionObserver((entries) => {
+      if (loading) return;
 
       if (entries[0].isIntersecting) {
         // console.log('fetch more results now...')
@@ -81,7 +82,7 @@ const App = () => {
     observer.observe(target);
 
     return () => observer.disconnect();
-  }, [])
+  }, [loading])
 
 
   return (
