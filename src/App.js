@@ -81,8 +81,7 @@ const App = () => {
       if (loading) return;
 
       if (entries[0].isIntersecting) {
-        // console.log('fetch more results now...')
-        setOffset(prevOffset => prevOffset + 25)
+        setOffset(prevOffset => prevOffset + PER_PAGE_LIMIT)
       }
     });
 
@@ -143,7 +142,7 @@ const App = () => {
               })}
               <div id="load-more-results"></div>
             </div>
-            {loading && (<div>Loading more results...</div>)}
+            {loading && (<div>Loading results...</div>)}
             {!loading && !hasMoreResults && (<div>No more results.</div>)}
           </div>
         </div>
