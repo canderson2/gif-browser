@@ -109,7 +109,10 @@ const App = () => {
             <div className="col-lg-6 col-md-8 mx-auto">
               <form onSubmit={(e) => handleSubmit(e)}>
                 <div className="input-group mb-3">
-                  <input className="form-control" type="text" placeholder="Search" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+                  <input className="form-control" type="text" placeholder="Search for GIFs..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+                  <div className="input-group-append">
+                    <button className="btn btn-outline-secondary" type="submit">Search</button>
+                  </div>
                 </div>
               </form>
             </div>
