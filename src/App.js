@@ -13,9 +13,9 @@ const App = () => {
   const shouldDisplayTrendingResults = () => queriedSearchTerm.trim() === '';
 
   const handleSubmit = (e) => {
-    // console.log('submitting search request...');
-
     e.preventDefault();
+
+    setResults([]);
     setQueriedSearchTerm(searchTerm);
   }
 
