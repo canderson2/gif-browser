@@ -121,14 +121,10 @@ const App = () => {
 
         <div className="album py-5 bg-light">
           <div className="container">
-
             <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-
               {results.map(result => {
-                const { id, slug, title, images } = result;
+                const { id, title, images } = result;
                 const { original: { url } } = images;
-                const { fixed_width: { url: fixedWithUrl } } = images;
-                const { fixed_height: { url: fixedHeightUrl } } = images;
 
                 return (
                   <div key={id} className="col">
