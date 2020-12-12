@@ -8,6 +8,8 @@ const App = () => {
 
   const [results, setResults] = useState([]);
 
+  const shouldDisplayTrendingResults = () => queriedSearchTerm.trim() === '';
+
   const handleSubmit = (e) => {
     // console.log('submitting search request...');
 
@@ -40,16 +42,17 @@ const App = () => {
     })
   }
 
-  useEffect(() => {
-    // fetchTrendingResults().then(res => {
-    //   const fetchedData = res.data.data;
-    //   // console.log('fetched data', fetchedData);
-    //
-    //   setResults(fetchedData);
-    // })
+  const fetchResults = (query) => {
+    if (shouldDisplayTrendingResults()) {
+      return fetchTrendingResults();
+    }
 
-    fetchSearchResults(queriedSearchTerm).then(res => {
-      console.log('search results', res)
+    return fetchSearchResults(query);
+  }
+
+  useEffect(() => {
+    fetchResults(queriedSearchTerm).then(res => {
+      // console.log('search results', res)
 
       setResults(res.data.data)
     })
