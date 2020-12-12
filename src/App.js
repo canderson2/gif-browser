@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const App = () => {
+  const PER_PAGE_LIMIT = 24; // a number divisible by 3 (3 GIFs per row)
 
   const [searchTerm, setSearchTerm] = useState('');
   const [queriedSearchTerm, setQueriedSearchTerm] = useState('');
@@ -25,7 +26,7 @@ const App = () => {
       url: 'https://api.giphy.com/v1/gifs/trending',
       params: {
         api_key: process.env.REACT_APP_GIPHY_API_KEY, // required param
-        limit: 25, // defaults to 25 per API docs
+        limit: PER_PAGE_LIMIT, // defaults to 25 per API docs
         offset: offset // defaults to 0 per API docs
       }
     })
@@ -38,7 +39,7 @@ const App = () => {
       params: {
         api_key: process.env.REACT_APP_GIPHY_API_KEY, // required param
         q: query, // required param
-        limit: 25, // defaults to 25 per API docs
+        limit: PER_PAGE_LIMIT, // defaults to 25 per API docs
         offset: offset // defaults to 0 per API docs
       }
     })
