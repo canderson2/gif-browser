@@ -20,6 +20,7 @@ const App = () => {
 
     setResults([]);
     setHasMoreResults(true);
+    setOffset(0);
     setQueriedSearchTerm(searchTerm);
   }
 
