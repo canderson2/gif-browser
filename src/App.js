@@ -78,9 +78,9 @@ const App = () => {
     const target = document.querySelector('#load-more-results');
 
     const observer = new IntersectionObserver((entries) => {
-      if (loading) return;
+      if (loading || results.length === 0) return;
 
-      if (entries[0].isIntersecting) {
+      if (entries[0].isIntersecting && hasMoreResults) {
         setOffset(prevOffset => prevOffset + PER_PAGE_LIMIT)
       }
     });
@@ -88,7 +88,7 @@ const App = () => {
     observer.observe(target);
 
     return () => observer.disconnect();
-  }, [loading])
+  }, [loading, hasMoreResults, results])
 
 
   return (
