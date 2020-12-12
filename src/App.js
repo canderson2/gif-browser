@@ -73,7 +73,6 @@ const App = () => {
     })
   }, [queriedSearchTerm, offset])
 
-
   useEffect(() => {
     const target = document.querySelector('#load-more-results');
 
@@ -89,7 +88,6 @@ const App = () => {
 
     return () => observer.disconnect();
   }, [loading, hasMoreResults, results])
-
 
   return (
     <>
@@ -143,7 +141,8 @@ const App = () => {
               <div id="load-more-results"></div>
             </div>
             {loading && (<div>Loading results...</div>)}
-            {!loading && !hasMoreResults && (<div>No more results.</div>)}
+            {!loading && !hasMoreResults && results.length > 0 && (<div>No more results.</div>)}
+            {!loading && !hasMoreResults && results.length === 0 && (<div>No results found.</div>)}
           </div>
         </div>
       </main>
