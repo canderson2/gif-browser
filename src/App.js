@@ -130,8 +130,7 @@ const App = () => {
                 return (
                   <div key={id} className="col">
                     <div className="card shadow-sm">
-
-                      <img src={url} alt={title}/>
+                      <img src={url} alt={title} onClick={() => window.location = url} />
                       <div className="card-body">
                         <p className="card-text">{title}</p>
                       </div>
