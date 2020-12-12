@@ -8,8 +8,9 @@ const App = () => {
   const [queriedSearchTerm, setQueriedSearchTerm] = useState('');
 
   const [results, setResults] = useState([]);
-
   const [offset, setOffset] = useState(0);
+
+  const [loading, setLoading] = useState(false);
 
   const shouldDisplayTrendingResults = () => queriedSearchTerm.trim() === '';
 
@@ -54,10 +55,14 @@ const App = () => {
   }
 
   useEffect(() => {
+    setLoading(true);
+
     fetchResults(queriedSearchTerm, offset).then(res => {
       const fetchedResults = res.data.data;
 
       setResults(prevResults => [...prevResults, ...fetchedResults]);
+
+      setLoading(false);
     })
   }, [queriedSearchTerm, offset])
 
@@ -130,6 +135,7 @@ const App = () => {
               })}
               <div id="load-more-results"></div>
             </div>
+            {loading && (<div>Loading more results...</div>)}
           </div>
         </div>
       </main>
