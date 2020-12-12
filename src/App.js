@@ -8,6 +8,8 @@ const App = () => {
 
   const [results, setResults] = useState([]);
 
+  const [offset, setOffset] = useState(0);
+
   const shouldDisplayTrendingResults = () => queriedSearchTerm.trim() === '';
 
   const handleSubmit = (e) => {
@@ -17,19 +19,19 @@ const App = () => {
     setQueriedSearchTerm(searchTerm);
   }
 
-  const fetchTrendingResults = () => {
+  const fetchTrendingResults = (offset) => {
     return axios({
       method: 'GET',
       url: 'https://api.giphy.com/v1/gifs/trending',
       params: {
         api_key: process.env.REACT_APP_GIPHY_API_KEY, // required param
         limit: 25, // defaults to 25 per API docs
-        offset: 0 // defaults to 0 per API docs
+        offset: offset // defaults to 0 per API docs
       }
     })
   }
 
-  const fetchSearchResults = (query) => {
+  const fetchSearchResults = (query, offset) => {
     return axios({
       method: 'GET',
       url: 'https://api.giphy.com/v1/gifs/search',
@@ -37,36 +39,37 @@ const App = () => {
         api_key: process.env.REACT_APP_GIPHY_API_KEY, // required param
         q: query, // required param
         limit: 25, // defaults to 25 per API docs
-        offset: 0 // defaults to 0 per API docs
+        offset: offset // defaults to 0 per API docs
       }
     })
   }
 
-  const fetchResults = (query) => {
+  const fetchResults = (query, offset) => {
     if (shouldDisplayTrendingResults()) {
-      return fetchTrendingResults();
+      return fetchTrendingResults(offset);
     }
 
-    return fetchSearchResults(query);
+    return fetchSearchResults(query, offset);
   }
 
   useEffect(() => {
-    fetchResults(queriedSearchTerm).then(res => {
+    fetchResults(queriedSearchTerm, offset).then(res => {
       const fetchedResults = res.data.data;
 
-      setResults(fetchedResults)
+      setResults(prevResults => [...prevResults, ...fetchedResults]);
     })
-  }, [queriedSearchTerm])
+  }, [queriedSearchTerm, offset])
 
 
   useEffect(() => {
     const target = document.querySelector('#load-more-results');
 
-    const observer = new IntersectionObserver((entries, observer) => {
+    const observer = new IntersectionObserver((entries) => {
 
-      console.log('detecting target element...')
-      // console.log('entries', entries)
-      // console.log('observer', observer)
+      if (entries[0].isIntersecting) {
+        // console.log('fetch more results now...')
+        setOffset(prevOffset => prevOffset + 25)
+      }
     });
 
     observer.observe(target);
