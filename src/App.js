@@ -11,6 +11,7 @@ const App = () => {
   const [offset, setOffset] = useState(0);
 
   const [loading, setLoading] = useState(false);
+  const [hasMoreResults, setHasMoreResults] = useState(true);
 
   const shouldDisplayTrendingResults = () => queriedSearchTerm.trim() === '';
 
@@ -18,6 +19,7 @@ const App = () => {
     e.preventDefault();
 
     setResults([]);
+    setHasMoreResults(true);
     setQueriedSearchTerm(searchTerm);
   }
 
@@ -60,7 +62,11 @@ const App = () => {
     fetchResults(queriedSearchTerm, offset).then(res => {
       const fetchedResults = res.data.data;
 
-      setResults(prevResults => [...prevResults, ...fetchedResults]);
+      if (fetchedResults.length === 0) {
+        setHasMoreResults(false);
+      } else {
+        setResults(prevResults => [...prevResults, ...fetchedResults]);
+      }
 
       setLoading(false);
     })
@@ -137,6 +143,7 @@ const App = () => {
               <div id="load-more-results"></div>
             </div>
             {loading && (<div>Loading more results...</div>)}
+            {!loading && !hasMoreResults && (<div>No more results.</div>)}
           </div>
         </div>
       </main>
