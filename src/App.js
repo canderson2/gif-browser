@@ -52,11 +52,27 @@ const App = () => {
 
   useEffect(() => {
     fetchResults(queriedSearchTerm).then(res => {
-      // console.log('search results', res)
+      const fetchedResults = res.data.data;
 
-      setResults(res.data.data)
+      setResults(fetchedResults)
     })
   }, [queriedSearchTerm])
+
+
+  useEffect(() => {
+    const target = document.querySelector('#load-more-results');
+
+    const observer = new IntersectionObserver((entries, observer) => {
+
+      console.log('detecting target element...')
+      // console.log('entries', entries)
+      // console.log('observer', observer)
+    });
+
+    observer.observe(target);
+
+    return () => observer.disconnect();
+  }, [])
 
 
   return (
@@ -108,7 +124,7 @@ const App = () => {
                   </div>
                 )
               })}
-
+              <div id="load-more-results"></div>
             </div>
           </div>
         </div>
