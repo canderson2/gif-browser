@@ -18,12 +18,31 @@ const App = () => {
     })
   }
 
-  useEffect(() => {
-    fetchTrendingResults().then(res => {
-      const fetchedData = res.data.data;
-      // console.log('fetched data', fetchedData);
+  const fetchSearchResults = () => {
+    return axios({
+      method: 'GET',
+      url: 'https://api.giphy.com/v1/gifs/search',
+      params: {
+        api_key: process.env.REACT_APP_GIPHY_API_KEY, // required param
+        q: 'dave chappelle', // required param
+        limit: 25, // defaults to 25 per API docs
+        offset: 0 // defaults to 0 per API docs
+      }
+    })
+  }
 
-      setResults(fetchedData);
+  useEffect(() => {
+    // fetchTrendingResults().then(res => {
+    //   const fetchedData = res.data.data;
+    //   // console.log('fetched data', fetchedData);
+    //
+    //   setResults(fetchedData);
+    // })
+
+    fetchSearchResults().then(res => {
+      console.log('search results', res)
+
+      setResults(res.data.data)
     })
   }, [])
 
